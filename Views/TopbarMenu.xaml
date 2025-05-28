@@ -13,16 +13,30 @@
         </StackPanel>
         <!--<StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Margin="10,0,0,0" VerticalAlignment="Center">-->
             <!--<Button Content="Home" FontWeight="Bold" Margin="5,5,2,5" Width="70" Height="Auto" Command="{Binding NavigateCommand}" CommandParameter="Home" />-->
-            <Button Margin="2,5" Width="70" Command="{Binding NavigateCommand}" CommandParameter="Recalculate">
-                <TextBlock FontWeight="Bold" TextAlignment="Center" TextWrapping="Wrap">System settings</TextBlock>
-            </Button>
-            <Button Margin="2,5" Width="70" Command="{Binding NavigateCommand}" CommandParameter="Backup">
+        <Button Margin="2,5" Width="70" Command="{Binding NavigateCommand}" CommandParameter="Systemsettings">
+            <StackPanel Orientation="Vertical">
+                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE713;" FontSize="24" Margin="0,0,0,5" TextAlignment="Center"/>
+                <TextBlock FontWeight="Bold" TextWrapping="Wrap" TextAlignment="Center">System settings</TextBlock>
+            </StackPanel>
+        </Button>
+        <Button Margin="2,5" Width="70" Command="{Binding NavigateCommand}" CommandParameter="Backup">
+            <StackPanel Orientation="Vertical">
+                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE895;" FontSize="24" Margin="0,0,0,5" TextAlignment="Center"/>
                 <TextBlock FontWeight="Bold" TextAlignment="Center" TextWrapping="Wrap">Backup Data</TextBlock>
-            </Button>
-            <Button Margin="2,5" Width="70" Command="{Binding NavigateCommand}" CommandParameter="LinkTable">
+            </StackPanel>
+        </Button>
+        <Button Margin="2,5" Width="70" Command="{Binding NavigateCommand}" CommandParameter="LinkTable">
+            <StackPanel Orientation="Vertical">
+                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE71B;" FontSize="24" Margin="0,0,0,5" TextAlignment="Center"/>
                 <TextBlock FontWeight="Bold" TextAlignment="Center" TextWrapping="Wrap">Link Table Manager</TextBlock>
-            </Button>
-            <Button FontWeight="Bold" Content="Quit" Margin="2,5" Width="70" Command="{Binding QuitCommand}" />
+            </StackPanel>
+        </Button>
+        <Button Margin="2,5" Width="70" Command="{Binding QuitCommand}">
+            <StackPanel Orientation="Vertical">
+                <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE7E8;" FontSize="24" Margin="0,0,0,5" TextAlignment="Center"/>
+                <TextBlock FontWeight="Bold" TextAlignment="Center" TextWrapping="Wrap">Exit Application</TextBlock>
+            </StackPanel>
+        </Button>
         <!--</StackPanel>-->
     </DockPanel>
 </UserControl>
