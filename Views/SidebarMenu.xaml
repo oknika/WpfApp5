@@ -1,0 +1,149 @@
+﻿<UserControl x:Class="WpfApp5.Views.SidebarMenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfApp5.Views"
+             xmlns:vm="clr-namespace:WpfApp5.ViewModels"
+             xmlns:conv="clr-namespace:WpfApp5.General"
+             mc:Ignorable="d" >
+    <UserControl.DataContext>
+        <vm:SidebarMenuVM/>
+    </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <conv:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            
+        <Style x:Key="SidebarButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="5,5" />
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+
+        <!--<Style x:Key="SidebarButtonWithSelection" TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Tag, RelativeSource={RelativeSource Self}}" Value="{Binding DataContext.CurrentViewName, RelativeSource={RelativeSource AncestorType=Window}}">
+                <Setter Property="Background" Value="LightBlue" />
+                <Setter Property="Foreground" Value="Black" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>-->
+
+    </UserControl.Resources>
+
+    <Grid Background="White" Margin="0,10,0,10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="40" />
+        </Grid.ColumnDefinitions>
+
+        <Button
+            Width="30"
+            Height="Auto"
+            Margin="5"
+            Background="White"
+            Command="{Binding ToggleSidebarCommand}" 
+                Grid.Column="1">
+            <Path Fill="Black" Width="10" Height="10" Stretch="Uniform">
+                <Path.Data>
+                    <PathGeometry>
+                        <PathFigure StartPoint="10,10">
+                            <LineSegment Point="0,5"/>
+                            <LineSegment Point="10,0"/>
+                            <LineSegment Point="10,10"/>
+                        </PathFigure>
+                    </PathGeometry>
+                </Path.Data>
+            </Path>
+        </Button>
+
+        <StackPanel Grid.Column="0" Margin="5" VerticalAlignment="Top">
+            <Button Content="Analysis"
+                Command="{Binding ToggleAnalysisCommand}"
+                >
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsAnalysisExpanded}" Value="True">
+                                <Setter Property="Background" Value="LightBlue"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <StackPanel Margin="15,0,0,5" 
+                Visibility="{Binding IsAnalysisExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Button Content="Child Button 1" 
+                Style="{StaticResource SidebarButtonStyle}" 
+                Command="{Binding Child1Command}" />
+                    <Button Content="Child Button 2" 
+                Style="{StaticResource SidebarButtonStyle}" 
+                Command="{Binding Child2Command}" />
+                    <Button Content="Child Button 3" 
+                Style="{StaticResource SidebarButtonStyle}" 
+                Command="{Binding Child3Command}" />
+            </StackPanel>
+            
+            <Button Content="Edit Data"
+                Command="{Binding ToggleEditDataCommand}">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsEditDataExpanded}" Value="True">
+                                <Setter Property="Background" Value="LightBlue"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <StackPanel Margin="15,0,0,5" 
+                Visibility="{Binding IsEditDataExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Button Content="Child Button 1" 
+                Style="{StaticResource SidebarButtonStyle}" 
+                Command="{Binding Child1Command}" />
+                            <Button Content="Child Button 2" 
+                Style="{StaticResource SidebarButtonStyle}" 
+                Command="{Binding Child2Command}" />
+                            <Button Content="Child Button 3" 
+                Style="{StaticResource SidebarButtonStyle}" 
+                Command="{Binding Child3Command}" />
+            </StackPanel>
+            
+            <Button Content="Settings &amp; tools"
+                Command="{Binding ToggleSettingsCommand}">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsSettingsExpanded}" Value="True">
+                                <Setter Property="Background" Value="LightBlue"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <StackPanel Margin="15,0,0,5" 
+                Visibility="{Binding IsSettingsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Button Content="Child Button 1" 
+                Style="{StaticResource SidebarButtonStyle}" 
+                Command="{Binding Child1Command}" />
+                            <Button Content="Child Button 2" 
+                Style="{StaticResource SidebarButtonStyle}" 
+                Command="{Binding Child2Command}" />
+                            <Button Content="Child Button 3" 
+                Style="{StaticResource SidebarButtonStyle}" 
+                Command="{Binding Child3Command}" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>
