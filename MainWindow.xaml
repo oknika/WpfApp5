@@ -9,16 +9,17 @@
         x:Name="MainWin"
         mc:Ignorable="d"
         Title="Purchasing App"
-        WindowState="Maximized">
-
+        WindowState="Maximized"
+        >
+    
     <Window.DataContext>
         <vm:MainWindowVM />
     </Window.DataContext>
-    
+
     <DockPanel>
         <!-- Toolbox on top -->
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Background="White" Height="Auto" VerticalAlignment="Top">
-            <views:TopbarMenu/>
+            <views:TopbarMenu DataContext="{Binding}"/>
         </StackPanel>
 
         <Line/>
@@ -26,7 +27,12 @@
 
         <!-- Main content area -->
         <Grid Background="#FF2D2D30">
-            <ContentControl Content="{Binding CurrentView}" Margin="10"/>
+            <!--<ContentControl Content="{Binding CurrentView}" Margin="10"/>-->
+            <TextBlock Text="Main Window Loaded"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   FontSize="24"
+                   Foreground="Black"/>
         </Grid>
     </DockPanel>
 </Window>

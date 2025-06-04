@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,6 +20,10 @@ namespace WpfApp5
         public MainWindow()
         {
             InitializeComponent();
+
+            this.Loaded += (s, e) => Debug.WriteLine("MainWindow Loaded");
+            this.Closing += (s, e) => Debug.WriteLine("MainWindow Closing");
+            this.Closed += (s, e) => Debug.WriteLine("MainWindow Closed");
         }
     }
 }
