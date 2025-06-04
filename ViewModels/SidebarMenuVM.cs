@@ -9,7 +9,9 @@ using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using WpfApp5.General;
+using WpfApp5.Views;
 
 namespace WpfApp5.ViewModels
 {
@@ -21,6 +23,8 @@ namespace WpfApp5.ViewModels
         private bool isEditDataExpanded;
         [ObservableProperty]
         private bool isSettingsExpanded;
+        [ObservableProperty]
+        private bool isReturnExpanded;
 
         [RelayCommand]
         private void ToggleAnalysis()
@@ -31,6 +35,10 @@ namespace WpfApp5.ViewModels
         [RelayCommand]
         private void ToggleEditData()
         {
+            if (IsReturnExpanded)
+            {
+                IsReturnExpanded = false;
+            }
             IsEditDataExpanded = !IsEditDataExpanded;
         }
 
@@ -41,9 +49,28 @@ namespace WpfApp5.ViewModels
         }
 
         [RelayCommand]
-        private void Child1()
+        private void ToggleReturn()
         {
-            // Your logic for Child Button 1
+            IsReturnExpanded = !IsReturnExpanded;
+        }
+
+        [RelayCommand]
+        private void ChildEdit(string? destination)
+        {
+            switch (destination)
+            {
+                case "PurchaseOrder":
+                    var window = new LTM();
+                    window.Owner = Application.Current.MainWindow;
+                    window.ShowDialog();
+                    break;
+
+                case "SalesOrder":
+                    break;
+
+                case "Return":
+                    break;
+            }
         }
 
         [RelayCommand]

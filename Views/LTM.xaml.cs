@@ -45,5 +45,13 @@ namespace WpfApp5.Views
                 };
             }*/
         }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is LTMVM vm)
+            {
+                vm.Password = PasswordInput.Password;
+            }
+        }
     }
 }

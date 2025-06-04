@@ -27,12 +27,7 @@
 
         <!-- Main content area -->
         <Grid Background="#FF2D2D30">
-            <!--<ContentControl Content="{Binding CurrentView}" Margin="10"/>-->
-            <TextBlock Text="Main Window Loaded"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   FontSize="24"
-                   Foreground="Black"/>
+            <ContentControl Content="{Binding CurrentView}" Margin="10"/>
         </Grid>
     </DockPanel>
 </Window>

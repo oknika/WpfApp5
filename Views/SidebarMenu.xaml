@@ -19,7 +19,7 @@
             <Setter Property="Foreground" Value="Black" />
             <Setter Property="BorderBrush" Value="Gray" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
             <Setter Property="Padding" Value="5,5" />
             <Setter Property="Margin" Value="2" />
             <Setter Property="FontSize" Value="12" />
@@ -107,17 +107,41 @@
 
             <StackPanel Margin="15,0,0,5" 
                 Visibility="{Binding IsEditDataExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <Button Content="Child Button 1" 
+                            <Button Content="Purchase Order" 
                 Style="{StaticResource SidebarButtonStyle}" 
-                Command="{Binding Child1Command}" />
-                            <Button Content="Child Button 2" 
+                Command="{Binding ChildEditCommand}" 
+                CommandParameter="PurchaseOrder"/>
+                            <Button Content="Sales Order" 
                 Style="{StaticResource SidebarButtonStyle}" 
-                Command="{Binding Child2Command}" />
-                            <Button Content="Child Button 3" 
-                Style="{StaticResource SidebarButtonStyle}" 
-                Command="{Binding Child3Command}" />
+                Command="{Binding ChildEditCommand}"
+                CommandParameter="SalesOrder"/>
+                <Button Content="Return" 
+                    Command="{Binding ToggleReturnCommand}">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsReturnExpanded}" Value="True">
+                                    <Setter Property="Background" Value="LightBlue"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </StackPanel>
-            
+
+            <StackPanel Margin="30,0,0,5" 
+                Visibility="{Binding IsReturnExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Button Content="Purchase" 
+                Style="{StaticResource SidebarButtonStyle}" 
+                Command="{Binding ChildReturnCommand}" 
+                CommandParameter="ReturnPurchase"/>
+                <Button Content="Sales" 
+                Style="{StaticResource SidebarButtonStyle}" 
+                Command="{Binding ChildReturnCommand}"
+                CommandParameter="ReturnSales"/>
+            </StackPanel>
+
             <Button Content="Settings &amp; tools"
                 Command="{Binding ToggleSettingsCommand}">
                 <Button.Style>

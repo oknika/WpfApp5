@@ -71,6 +71,7 @@ namespace WpfApp5.ViewModels
         [RelayCommand]
         private void Connect()
         {
+            Debug.WriteLine($"password: {Password}, Win auth: {UseWindowsAuth}");
             TableNames.Clear();
             try
             {
