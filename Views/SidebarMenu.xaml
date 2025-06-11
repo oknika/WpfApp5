@@ -107,14 +107,34 @@
 
             <StackPanel Margin="15,0,0,5" 
                 Visibility="{Binding IsEditDataExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <Button Content="Purchase Order" 
-                Style="{StaticResource SidebarButtonStyle}" 
-                Command="{Binding ChildEditCommand}" 
-                CommandParameter="PurchaseOrder"/>
-                            <Button Content="Sales Order" 
-                Style="{StaticResource SidebarButtonStyle}" 
-                Command="{Binding ChildEditCommand}"
-                CommandParameter="SalesOrder"/>
+                <Button Content="Purchase Order"  
+                    Command="{Binding ChildEditCommand}" 
+                    CommandParameter="PurchaseOrder">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsEDPurchaseOrder}" Value="True">
+                                    <Setter Property="Background" Value="LightBlue"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button Content="Sales Order" 
+                    Command="{Binding ChildEditCommand}"
+                    CommandParameter="SalesOrder">
+                    <Button.Style>
+                        <Style TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
+                            <!--<Style.Triggers>
+                                <DataTrigger Binding="{Binding IsEDPurchaseOrder}" Value="True">
+                                    <Setter Property="Background" Value="LightBlue"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </DataTrigger>
+                            </Style.Triggers>-->
+                        </Style>
+                    </Button.Style>
+                </Button>
                 <Button Content="Return" 
                     Command="{Binding ToggleReturnCommand}">
                     <Button.Style>

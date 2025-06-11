@@ -25,6 +25,8 @@ namespace WpfApp5.ViewModels
         private bool isSettingsExpanded;
         [ObservableProperty]
         private bool isReturnExpanded;
+        [ObservableProperty]
+        private bool isEDPurchaseOrder;
 
         [RelayCommand]
         private void ToggleAnalysis()
@@ -60,9 +62,24 @@ namespace WpfApp5.ViewModels
             switch (destination)
             {
                 case "PurchaseOrder":
-                    var window = new LTM();
+                    IsEDPurchaseOrder = true;
+
+                    foreach (Window xwindow in Application.Current.Windows)
+                    {
+                        if (xwindow is FrmEDPurchaseOrder)
+                        {
+                            xwindow.Activate(); // Bring it to the front
+                            return; // Prevent opening another one
+                        }
+                    }
+
+                    var window = new FrmEDPurchaseOrder();
                     window.Owner = Application.Current.MainWindow;
-                    window.ShowDialog();
+                    window.Closed += (s, e) =>
+                    {
+                        IsEDPurchaseOrder = false;
+                    };
+                    window.Show();
                     break;
 
                 case "SalesOrder":
