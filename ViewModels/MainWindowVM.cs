@@ -49,6 +49,7 @@ namespace WpfApp5.ViewModels
                 case "LinkTable":
                     var window = new LTM();
                     window.Owner = Application.Current.MainWindow;
+                    window.ShowInTaskbar = false;
                     window.ShowDialog();
                     break;
 

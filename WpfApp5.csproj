@@ -16,7 +16,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="ViewModels\RptDAProducts.xaml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Readme.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="ViewModels\RptDAProducts.xaml" />
   </ItemGroup>
 
   <ItemGroup>

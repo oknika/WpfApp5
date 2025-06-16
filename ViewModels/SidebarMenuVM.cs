@@ -24,14 +24,36 @@ namespace WpfApp5.ViewModels
         [ObservableProperty]
         private bool isSettingsExpanded;
         [ObservableProperty]
+        private bool isAnAnalysisExpanded;
+        [ObservableProperty]
+        private bool isAnReportExpanded;
+        [ObservableProperty]
         private bool isReturnExpanded;
+
+
         [ObservableProperty]
         private bool isEDPurchaseOrder;
+        [ObservableProperty]
+        private bool isAnProducts;
+        [ObservableProperty]
+        private bool isAnProductsReport;
 
         [RelayCommand]
         private void ToggleAnalysis()
         {
             IsAnalysisExpanded = !IsAnalysisExpanded;
+        }
+
+        [RelayCommand]
+        private void ToggleAnAnalysis()
+        {
+            IsAnAnalysisExpanded = !IsAnAnalysisExpanded;
+        }
+
+        [RelayCommand]
+        private void ToggleAnReport()
+        {
+            IsAnReportExpanded = !IsAnReportExpanded;
         }
 
         [RelayCommand]
@@ -75,6 +97,7 @@ namespace WpfApp5.ViewModels
 
                     var window = new FrmEDPurchaseOrder();
                     window.Owner = Application.Current.MainWindow;
+                    window.ShowInTaskbar = false;
                     window.Closed += (s, e) =>
                     {
                         IsEDPurchaseOrder = false;
@@ -91,9 +114,59 @@ namespace WpfApp5.ViewModels
         }
 
         [RelayCommand]
-        private void Child2()
+        private void ChildAnalysis(string? destination)
         {
-            // Your logic for Child Button 2
+            Window window = null;
+
+            switch (destination)
+            {
+                case "AnProducts":
+                    {
+                        IsAnProducts = true;
+
+                        foreach (Window xwindow in Application.Current.Windows)
+                        {
+                            if (xwindow is FrmDAProducts)
+                            {
+                                xwindow.Activate(); // Bring it to the front
+                                return; // Prevent opening another one
+                            }
+                        }
+
+                        window = new FrmDAProducts();
+                        window.Owner = Application.Current.MainWindow;
+                        window.ShowInTaskbar = false;
+                        window.Closed += (s, e) =>
+                        {
+                            IsAnProducts = false;
+                        };
+                        window.Show();
+                        break;
+                    }
+                case "AnProductsReport":
+                    {
+                        IsAnProductsReport = true;
+
+                        foreach (Window xwindow in Application.Current.Windows)
+                        {
+                            if (xwindow is RptDAProducts)
+                            {
+                                xwindow.Activate(); // Bring it to the front
+                                return; // Prevent opening another one
+                            }
+                        }
+
+                        window = new RptDAProducts();
+                        window.Owner = Application.Current.MainWindow;
+                        window.ShowInTaskbar = false;
+                        window.Closed += (s, e) =>
+                        {
+                            IsAnProductsReport = false;
+                        };
+                        window.ShowDialog();
+                        break;
+                    }
+            }
         }
 
         [RelayCommand]

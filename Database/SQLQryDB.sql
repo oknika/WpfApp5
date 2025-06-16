@@ -34,12 +34,23 @@ PRIMARY KEY CLUSTERED
 ))
 GO
 
+CREATE TABLE [dbo].[tbl_ProductGroups]
+(
+	[ProductGrp] [nvarchar](10) NOT NULL,
+	[ProductGrp_name] [nvarchar](100) NOT NULL
+Primary key clustered
+(
+	[ProductGrp] ASC
+))
+GO
+
 CREATE TABLE [dbo].[tbl_Products](
 	[ProductID] [nvarchar](6) NOT NULL,
 	[ProductName] [nvarchar](100) NOT NULL,
 	[ProductQty] [decimal](18, 2) NOT NULL,
 	[ProductUnit] [nvarchar](20) NULL,
 	[ProductPrice] [decimal](18, 2) NULL,
+	[ProductGrp] [nvarchar](10) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[ProductID] ASC
@@ -49,4 +60,8 @@ GO
 ALTER TABLE [dbo].[PurchaseOrderDetails]  WITH CHECK ADD FOREIGN KEY([PurchaseOrderID])
 REFERENCES [dbo].[PurchaseOrders] ([PurchaseOrderID])
 ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[tbl_Products] ADD FOREIGN KEY([ProductGrp])
+REFERENCES [dbo].[tbl_ProductGroups] ([ProductGrp])
 GO
