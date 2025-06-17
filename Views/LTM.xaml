@@ -7,14 +7,15 @@
         xmlns:viewmodels="clr-namespace:WpfApp5.ViewModels"
         WindowStartupLocation="CenterOwner"
         mc:Ignorable="d"
-        Title="Link Table Manager" Height="450" Width="800">
+        Title="Link Table Manager" Height="450" Width="800" ResizeMode="NoResize">
     <Window.Resources>
         <local:InverseBoolConverter x:Key="InverseBoolConverter"/>
     </Window.Resources>
+
     <!--<Window.DataContext>
         <viewmodels:LTMVM />
     </Window.DataContext>-->
-    
+
     <StackPanel Margin="20" VerticalAlignment="Top">
         <TextBlock Text="Server Name:" />
         <TextBox Text="{Binding ServerName, UpdateSourceTrigger=PropertyChanged}" Width="300"/>

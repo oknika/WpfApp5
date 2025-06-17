@@ -6,15 +6,27 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Printing;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
+using System.IO;
+using System.Windows.Markup;
+using System.Xml;
+using WpfApp5.Helper;
 using WpfApp5.Models;
+using WpfApp5.Views;
 
 namespace WpfApp5.ViewModels
 {
     public partial class RptDAProductsVM : ObservableObject
     {
+        public ObservableCollection<ProductGroup> GroupedPagedProducts { get; } = new();
+        public ObservableCollection<ProductGroup> GroupedAllProducts { get; } = new();
+
         [ObservableProperty]
         private string connString = Properties.Settings.Default.MainConnString;
 
@@ -34,6 +46,65 @@ namespace WpfApp5.ViewModels
             LoadDataFromSQL();
             LoadPagedProducts();
             SetupGrouping();
+            SetupGroupedProductsForPrinting();
+        }
+
+        public void SetupGroupedProductsForPrinting()
+        {
+            GroupedAllProducts.Clear();
+
+            var grouped = PagedProducts
+                .GroupBy(p => p.ProductGrp)
+                .OrderBy(g => g.Key);
+
+            foreach (var group in grouped)
+            {
+                GroupedAllProducts.Add(new ProductGroup
+                {
+                    GroupName = group.First().ProductGrpName,
+                    Products = new ObservableCollection<Product>(group)
+                });
+            }
+        }
+
+        public FixedDocument BuildGroupedPrintPreviewDocument()
+        {
+            var finalDoc = new FixedDocument();
+            var pageSize = new Size(816, 1056); // A4 at 96 DPI
+
+            foreach (var group in GroupedAllProducts)
+            {
+                var control = new SimpleReport
+                {
+                    DataContext = group,
+                    Width = pageSize.Width
+                };
+
+                control.Measure(new Size(pageSize.Width, double.PositiveInfinity));
+                control.Arrange(new Rect(0, 0, pageSize.Width, control.DesiredSize.Height));
+                control.UpdateLayout();
+
+                var groupDoc = PrintPreviewBuilder.BuildFixedDocument(control, pageSize, "");
+
+                foreach (PageContent page in groupDoc.Pages)
+                {
+                    //finalDoc.Pages.Add(page);
+                    var fixedPage = (FixedPage)((PageContent)page).Child;
+
+                    // Deep clone using XAML serialization
+                    string xaml = XamlWriter.Save(fixedPage);
+                    using StringReader stringReader = new StringReader(xaml);
+                    using XmlReader xmlReader = XmlReader.Create(stringReader);
+                    FixedPage clonedPage = (FixedPage)XamlReader.Load(xmlReader);
+
+                    PageContent newPageContent = new PageContent();
+                    ((IAddChild)newPageContent).AddChild(clonedPage);
+
+                    finalDoc.Pages.Add(newPageContent);
+                }
+            }
+
+            return finalDoc;
         }
 
         private void SetupGrouping()

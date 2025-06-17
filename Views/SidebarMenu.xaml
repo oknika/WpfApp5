@@ -71,7 +71,7 @@
 
             <StackPanel Margin="15,0,0,5" 
                 Visibility="{Binding IsAnalysisExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
-                
+
                 <Button Content="Data Analysis" 
                     Command="{Binding ToggleAnAnalysisCommand}">
                     <Button.Style>
@@ -103,7 +103,7 @@
                         </Button.Style>
                     </Button>
                 </StackPanel>
-                
+
                 <Button Content="Report" 
                     Command="{Binding ToggleAnReportCommand}">
                     <Button.Style>
@@ -119,7 +119,7 @@
                 </Button>
                 <StackPanel Margin="30,0,0,5" 
                     Visibility="{Binding IsAnReportExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    
+
                     <Button Content="Products" 
                         Command="{Binding ChildAnalysisCommand}" 
                         CommandParameter="AnProductsReport">
@@ -134,10 +134,25 @@
                             </Style>
                         </Button.Style>
                     </Button>
+
+                    <Button Content="Sample" 
+                        Command="{Binding ChildAnalysisCommand}" 
+                        CommandParameter="AnSampleReport">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource SidebarButtonStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsAnSampleReport}" Value="True">
+                                        <Setter Property="Background" Value="LightBlue"/>
+                                        <Setter Property="Foreground" Value="Black"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
                 </StackPanel>
 
             </StackPanel>
-            
+
             <Button Content="Edit Data"
                 Command="{Binding ToggleEditDataCommand}">
                 <Button.Style>
@@ -199,7 +214,7 @@
 
             <StackPanel Margin="30,0,0,5" 
                 Visibility="{Binding IsReturnExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <Button Content="Purchase" 
+                <Button Content="Purchase" 
                 Style="{StaticResource SidebarButtonStyle}" 
                 Command="{Binding ChildReturnCommand}" 
                 CommandParameter="ReturnPurchase"/>
@@ -225,13 +240,13 @@
 
             <StackPanel Margin="15,0,0,5" 
                 Visibility="{Binding IsSettingsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <Button Content="Child Button 1" 
+                <Button Content="Child Button 1" 
                 Style="{StaticResource SidebarButtonStyle}" 
                 Command="{Binding Child1Command}" />
-                            <Button Content="Child Button 2" 
+                <Button Content="Child Button 2" 
                 Style="{StaticResource SidebarButtonStyle}" 
                 Command="{Binding Child2Command}" />
-                            <Button Content="Child Button 3" 
+                <Button Content="Child Button 3" 
                 Style="{StaticResource SidebarButtonStyle}" 
                 Command="{Binding Child3Command}" />
             </StackPanel>

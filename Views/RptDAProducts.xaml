@@ -20,7 +20,8 @@
             <Button Content="Next" Command="{Binding NextPageCommand}" Margin="5"/>
         </StackPanel>
 
-        <ListView ItemsSource="{Binding GroupedView}" DockPanel.Dock="Top">
+        <Label Content="Header" Width="164" Height="40" DockPanel.Dock="Top" Margin="5"/>
+        <ListView ItemsSource="{Binding GroupedView}" Height="480" Width="780">
             <ListView.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.HeaderTemplate>
@@ -37,9 +38,10 @@
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding ProductName}" Width="150"/>
                     <GridViewColumn Header="Qty" DisplayMemberBinding="{Binding ProductQty}" Width="60"/>
                     <GridViewColumn Header="Price" DisplayMemberBinding="{Binding ProductPrice}" Width="80"/>
-                    <GridViewColumn Header="Group" DisplayMemberBinding="{Binding ProductGrpName}" Width="100"/>
+                    <GridViewColumn Header="Group" DisplayMemberBinding="{Binding ProductGrpName}" Width="Auto"/>
                 </GridView>
             </ListView.View>
         </ListView>
+        
     </DockPanel>
 </Window>

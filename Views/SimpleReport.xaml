@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="WpfApp5.Views.SimpleReport"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfApp5.Views"
+             xmlns:vm="clr-namespace:WpfApp5.ViewModels"
+             Width="793.7">
+    <UserControl.DataContext>
+        <vm:RptDAProductsVM/>
+    </UserControl.DataContext>
+    
+    <Grid Margin="40,10,40,40">
+        <StackPanel>
+            <TextBlock Text="Simple WPF Report" FontSize="24" FontWeight="Bold" Margin="0,0,0,5"/>
+            <TextBlock Text="This is a sample report that uses the printer's selected page size." TextWrapping="Wrap" Margin="0,0,0,5"/>
+
+            <ItemsControl ItemsSource="{Binding AllProducts}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel Margin="2">
+                            <TextBlock Text="{Binding ProductID}" Width="60"/>
+                            <TextBlock Text="{Binding ProductName}" Width="150" Margin="5,0,0,0"/>
+                            <TextBlock Text="{Binding ProductQty}" Width="60" Margin="5,0,0,0"/>
+                            <TextBlock Text="{Binding ProductPrice}" Width="80" Margin="5,0,0,0"/>
+                            <TextBlock Text="{Binding ProductGrpName}" Margin="5,0,0,0"/>
+                        </DockPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </Grid>
+</UserControl>

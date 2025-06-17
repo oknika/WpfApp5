@@ -10,8 +10,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Markup;
 using WpfApp5.General;
 using WpfApp5.Views;
+using WpfApp5.Helper;
 
 namespace WpfApp5.ViewModels
 {
@@ -37,6 +41,8 @@ namespace WpfApp5.ViewModels
         private bool isAnProducts;
         [ObservableProperty]
         private bool isAnProductsReport;
+        [ObservableProperty]
+        private bool isAnSampleReport;
 
         [RelayCommand]
         private void ToggleAnalysis()
@@ -164,6 +170,57 @@ namespace WpfApp5.ViewModels
                             IsAnProductsReport = false;
                         };
                         window.ShowDialog();
+                        break;
+                    }
+                case "AnSampleReport":
+                    {
+                        IsAnSampleReport = true;
+
+                        /*var dlg = new PrintDialog();
+                        if (dlg.ShowDialog() != true)
+                            return;*/
+
+                        var report = new SimpleReport(); // Your report UserControl
+
+                        var a4Size = new Size(793.7, 1122.5); // A4 in DIPs
+
+                        // Arrange for printing
+                        //report.Measure(new Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight));
+                        //report.Arrange(new Rect(new Point(0, 0), report.DesiredSize));
+                        /*report.Measure(a4Size);
+                        report.Arrange(new Rect(new Point(0, 0), a4Size));
+
+                        var doc = new FixedDocument();
+                        var page = new PageContent();
+                        var fixedPage = new FixedPage
+                        {
+                            Width = a4Size.Width,
+                            Height = a4Size.Height
+                        };
+
+                        fixedPage.Children.Add(report);
+                        ((IAddChild)page).AddChild(fixedPage);
+                        doc.Pages.Add(page);*/
+
+                        foreach (Window xwindow in Application.Current.Windows)
+                        {
+                            if (xwindow is ReportPreview)
+                            {
+                                xwindow.Activate(); // Bring it to the front
+                                return; // Prevent opening another one
+                            }
+                        }
+
+                        var doc = PrintPreviewBuilder.BuildFixedDocument(report, a4Size, "Report: Products");
+                        var previewWindow = new ReportPreview(doc); 
+                        
+                        previewWindow.Owner = Application.Current.MainWindow;
+                        previewWindow.ShowInTaskbar = false;
+                        previewWindow.Closed += (s, e) =>
+                        {
+                            IsAnSampleReport = false;
+                        };
+                        previewWindow.ShowDialog();
                         break;
                     }
             }
