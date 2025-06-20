@@ -16,6 +16,7 @@ using System.Windows.Markup;
 using WpfApp5.General;
 using WpfApp5.Views;
 using WpfApp5.Helper;
+using WpfApp5.Models;
 
 namespace WpfApp5.ViewModels
 {
@@ -47,6 +48,14 @@ namespace WpfApp5.ViewModels
         [RelayCommand]
         private void ToggleAnalysis()
         {
+            if(IsAnAnalysisExpanded)
+            {
+                IsAnAnalysisExpanded = false;
+            }
+            if(IsAnReportExpanded)
+            {
+                IsAnReportExpanded = false;
+            }
             IsAnalysisExpanded = !IsAnalysisExpanded;
         }
 
@@ -84,6 +93,10 @@ namespace WpfApp5.ViewModels
             IsReturnExpanded = !IsReturnExpanded;
         }
 
+        /// <summary>
+        /// Command to handle child menu actions.
+        /// </summary>
+        /// <param name="destination"></param>
         [RelayCommand]
         private void ChildEdit(string? destination)
         {
@@ -92,6 +105,7 @@ namespace WpfApp5.ViewModels
                 case "PurchaseOrder":
                     IsEDPurchaseOrder = true;
 
+                    // Check if the window is already open
                     foreach (Window xwindow in Application.Current.Windows)
                     {
                         if (xwindow is FrmEDPurchaseOrder)
@@ -101,9 +115,11 @@ namespace WpfApp5.ViewModels
                         }
                     }
 
+                    // If not open, create a new instance
                     var window = new FrmEDPurchaseOrder();
                     window.Owner = Application.Current.MainWindow;
                     window.ShowInTaskbar = false;
+                    // Attach a closed event handler to reset the property
                     window.Closed += (s, e) =>
                     {
                         IsEDPurchaseOrder = false;
@@ -153,54 +169,20 @@ namespace WpfApp5.ViewModels
                     {
                         IsAnProductsReport = true;
 
-                        foreach (Window xwindow in Application.Current.Windows)
+                        // Create a ViewModel instance to load data
+                        var vm = new SimpleReportVM();
+                        // Load data from SQL
+                        vm.LoadDataFromSQL();
+                        var groupedData = vm?.GroupedProducts;
+
+                        // If the data is not loaded, show a message and return
+                        var report = new SimpleReport
                         {
-                            if (xwindow is RptDAProducts)
-                            {
-                                xwindow.Activate(); // Bring it to the front
-                                return; // Prevent opening another one
-                            }
-                        }
-
-                        window = new RptDAProducts();
-                        window.Owner = Application.Current.MainWindow;
-                        window.ShowInTaskbar = false;
-                        window.Closed += (s, e) =>
-                        {
-                            IsAnProductsReport = false;
-                        };
-                        window.ShowDialog();
-                        break;
-                    }
-                case "AnSampleReport":
-                    {
-                        IsAnSampleReport = true;
-
-                        /*var dlg = new PrintDialog();
-                        if (dlg.ShowDialog() != true)
-                            return;*/
-
-                        var report = new SimpleReport(); // Your report UserControl
-
-                        var a4Size = new Size(793.7, 1122.5); // A4 in DIPs
-
-                        // Arrange for printing
-                        //report.Measure(new Size(dlg.PrintableAreaWidth, dlg.PrintableAreaHeight));
-                        //report.Arrange(new Rect(new Point(0, 0), report.DesiredSize));
-                        /*report.Measure(a4Size);
-                        report.Arrange(new Rect(new Point(0, 0), a4Size));
-
-                        var doc = new FixedDocument();
-                        var page = new PageContent();
-                        var fixedPage = new FixedPage
-                        {
-                            Width = a4Size.Width,
-                            Height = a4Size.Height
+                            DataContext = vm
                         };
 
-                        fixedPage.Children.Add(report);
-                        ((IAddChild)page).AddChild(fixedPage);
-                        doc.Pages.Add(page);*/
+                        // Define the A4 size in pixels (assuming 96 DPI)
+                        var a4Size = new Size(793.7, 1122.5);
 
                         foreach (Window xwindow in Application.Current.Windows)
                         {
@@ -211,15 +193,82 @@ namespace WpfApp5.ViewModels
                             }
                         }
 
-                        var doc = PrintPreviewBuilder.BuildFixedDocument(report, a4Size, "Report: Products");
-                        var previewWindow = new ReportPreview(doc); 
-                        
-                        previewWindow.Owner = Application.Current.MainWindow;
-                        previewWindow.ShowInTaskbar = false;
-                        previewWindow.Closed += (s, e) =>
+                        var doc = CommonReportBuilder.BuildGroupedPaginationDocument<ProductGroup, Product>(
+                            groups: groupedData,
+                            getGroupItems: g => g.Products,
+                            createGroupHeader: ReportTemplates.CreateProductGroupHeader,
+                            createItemRow: ReportTemplates.CreateProductGroupedRow,
+                            pageSize: new Size(793.7, 1122.5),
+                            reportTitle: "Grouped Product Report",
+                            createFirstPageHeader: () => ReportTemplates.CreateBigTitleHeader("Grouped Product Report"),
+                            createRegularPageHeader: () => ReportTemplates.CreateSmallTitleHeader("Grouped Product Report"),
+                            createHeaderRow: ReportTemplates.CreateProductColumnHeader
+                        );
+
+                        // Create a new ReportPreview window
+                        var previewWindow = new ReportPreview(doc)
                         {
-                            IsAnSampleReport = false;
+                            Owner = Application.Current.MainWindow,
+                            ShowInTaskbar = false
                         };
+                        previewWindow.Closed += (s, e) => { IsAnProductsReport = false; };
+                        previewWindow.ShowDialog();
+                        break;
+                    }
+                case "AnSampleReport":
+                    {
+                        IsAnSampleReport = true;
+
+                        // Create a ViewModel instance to load data
+                        var vm = new SimpleReportVM();
+                        // Load data from SQL
+                        vm.LoadDataFromSQL();
+
+                        // If the data is not loaded, show a message and return
+                        var report = new SimpleReport
+                        {
+                            DataContext = vm
+                        };
+
+                        // Define the A4 size in pixels (assuming 96 DPI)
+                        var a4Size = new Size(793.7, 1122.5);
+
+                        // Check if the ReportPreview window is already open
+                        foreach (Window xwindow in Application.Current.Windows)
+                        {
+                            if (xwindow is ReportPreview)
+                            {
+                                xwindow.Activate();
+                                return;
+                            }
+                        }
+
+                        // Build paginated report from the ViewModel data
+                        var doc = CommonReportBuilder.BuildPaginationDocument(
+                            items: vm.AllProducts,
+                            createPageContent: products =>
+                            {
+                                var stack = new StackPanel();
+                                foreach (var p in products)
+                                    stack.Children.Add(ReportTemplates.CreateProductRow(p));
+                                return stack;
+                            },
+                            pageSize: a4Size,
+                            reportTitle: "Product Report",
+                            createFirstPageHeader: () => ReportTemplates.CreateBigTitleHeader("Product Report"),
+                            createRegularPageHeader: () => ReportTemplates.CreateSmallTitleHeader("Product Report"),
+                            createHeaderRow: () => ReportTemplates.CreateProductHeader()
+                        );
+
+                        // Create a new ReportPreview window
+                        var previewWindow = new ReportPreview(doc)
+                        {
+                            Owner = Application.Current.MainWindow,
+                            ShowInTaskbar = false
+                        };
+
+                        // Attach a closed event handler to reset the property
+                        previewWindow.Closed += (s, e) => { IsAnSampleReport = false; };
                         previewWindow.ShowDialog();
                         break;
                     }
@@ -232,10 +281,12 @@ namespace WpfApp5.ViewModels
             // Your logic for Child Button 3
         }
 
+        // Command to toggle the sidebar visibility.
         [RelayCommand]
         private void ToggleSidebar()
         {
             Debug.WriteLine("Sending ToggleSidebarMessage");
+            // Send a message to toggle the sidebar visibility.
             WeakReferenceMessenger.Default.Send(new ToggleSidebarMessage(true));
         }
     }

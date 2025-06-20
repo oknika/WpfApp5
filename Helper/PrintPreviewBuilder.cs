@@ -96,7 +96,7 @@ namespace WpfApp5.Helper
             return new TextBlock
             {
                 Text = reportTitle,
-                FontSize = 16,
+                FontSize = 12,
                 FontWeight = FontWeights.Bold,
                 Margin = new Thickness(40, 20, 0, 0)
             };
@@ -140,31 +140,5 @@ namespace WpfApp5.Helper
 
             return footerGrid;
         }
-
-        /*private static void AddPageHeader(FixedPage page, int pageIndex, int totalPages)
-        {
-            var header = new TextBlock
-            {
-                Text = $"Report Title - Page {pageIndex} of {totalPages}",
-                FontSize = 16,
-                FontWeight = FontWeights.Bold,
-                Margin = new Thickness(40, 20, 0, 0)
-            };
-            page.Children.Add(header);
-        }
-
-        private static void AddPageFooter(FixedPage page)
-        {
-            var footer = new TextBlock
-            {
-                Text = $"Printed on {DateTime.Now:dd MMM yyyy}",
-                FontSize = 12,
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Bottom,
-                Margin = new Thickness(0, 0, 40, 20)
-            };
-            FixedPage.SetBottom(footer, 0);
-            page.Children.Add(footer);
-        }*/
     }
 }

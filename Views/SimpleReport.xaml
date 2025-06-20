@@ -7,14 +7,14 @@
              xmlns:vm="clr-namespace:WpfApp5.ViewModels"
              Width="793.7">
     <UserControl.DataContext>
-        <vm:RptDAProductsVM/>
+        <vm:SimpleReportVM/>
     </UserControl.DataContext>
     
     <Grid Margin="40,10,40,40">
         <StackPanel>
             <TextBlock Text="Simple WPF Report" FontSize="24" FontWeight="Bold" Margin="0,0,0,5"/>
-            <TextBlock Text="This is a sample report that uses the printer's selected page size." TextWrapping="Wrap" Margin="0,0,0,5"/>
-
+            <TextBlock Text="This is a sample report that uses the printer's selected page size." TextWrapping="Wrap"/>
+            <Label Background="AntiqueWhite"/>
             <ItemsControl ItemsSource="{Binding AllProducts}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>

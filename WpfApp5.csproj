@@ -21,10 +21,17 @@
 
   <ItemGroup>
     <None Remove="Readme.txt" />
+    <None Remove="Resources\MainLogo.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Page Remove="ViewModels\RptDAProducts.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\MainLogo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

@@ -156,7 +156,7 @@ namespace WpfApp5.ViewModels
 
         private void LoadDataFromSQL()
         {
-            string connectionString = connString;
+            string connectionString = ConnString;
             string query = "SELECT tP.ProductID, tP.ProductName, tP.ProductQty, tP.ProductUnit, tP.ProductPrice, tG.ProductGrp, tG.ProductGrp_name " +
                 "FROM tbl_Products tP INNER JOIN tbl_ProductGroups tG ON tP.ProductGrp = tG.ProductGrp";
 
