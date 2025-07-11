@@ -18,7 +18,7 @@ namespace WpfApp5.Views
     /// <summary>
     /// Interaction logic for LandingPage.xaml
     /// </summary>
-    public partial class LandingPage : UserControl
+    public partial class LandingPage : System.Windows.Controls.UserControl
     {
         public LandingPage()
         {

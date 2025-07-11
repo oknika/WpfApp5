@@ -70,7 +70,7 @@ namespace WpfApp5.ViewModels
         public FixedDocument BuildGroupedPrintPreviewDocument()
         {
             var finalDoc = new FixedDocument();
-            var pageSize = new Size(816, 1056); // A4 at 96 DPI
+            var pageSize = new System.Windows.Size(816, 1056); // A4 at 96 DPI
 
             foreach (var group in GroupedAllProducts)
             {
@@ -80,7 +80,7 @@ namespace WpfApp5.ViewModels
                     Width = pageSize.Width
                 };
 
-                control.Measure(new Size(pageSize.Width, double.PositiveInfinity));
+                control.Measure(new System.Windows.Size(pageSize.Width, double.PositiveInfinity));
                 control.Arrange(new Rect(0, 0, pageSize.Width, control.DesiredSize.Height));
                 control.UpdateLayout();
 

@@ -18,7 +18,7 @@ namespace WpfApp5.Views
     /// <summary>
     /// Interaction logic for SimpleReport.xaml
     /// </summary>
-    public partial class SimpleReport : UserControl
+    public partial class SimpleReport : System.Windows.Controls.UserControl
     {
         public SimpleReport()
         {

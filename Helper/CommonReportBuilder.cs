@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -7,6 +8,8 @@ using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using HorizontalAlignment = System.Windows.HorizontalAlignment;
+using Size = System.Windows.Size;
 
 namespace WpfApp5.Helper
 {
@@ -25,7 +28,7 @@ namespace WpfApp5.Helper
         public static FixedDocument BuildPaginationDocument<T>(
         IEnumerable<T> items,
         Func<IEnumerable<T>, UIElement> createPageContent,
-        Size pageSize,
+        System.Windows.Size pageSize,
         string reportTitle,
         Func<UIElement> createFirstPageHeader,
         Func<UIElement> createRegularPageHeader,
@@ -41,7 +44,7 @@ namespace WpfApp5.Helper
             // Estimate height of one item
             var testItems = items.Take(1).ToList();
             var testPanel = createPageContent(testItems);
-            testPanel.Measure(new Size(pageSize.Width, double.PositiveInfinity));
+            testPanel.Measure(new System.Windows.Size(pageSize.Width, double.PositiveInfinity));
             double estimatedItemHeight = testPanel.DesiredSize.Height;
 
             double headerRowHeight = 0;
@@ -50,7 +53,7 @@ namespace WpfApp5.Helper
             if (createHeaderRow != null)
             {
                 var testHeader = createHeaderRow();
-                testHeader.Measure(new Size(pageSize.Width, double.PositiveInfinity));
+                testHeader.Measure(new System.Windows.Size(pageSize.Width, double.PositiveInfinity));
                 headerRowHeight = testHeader.DesiredSize.Height;
             }
 
@@ -92,7 +95,7 @@ namespace WpfApp5.Helper
                 var itemContent = createPageContent(pagedData[i]);
                 contentStack.Children.Add(itemContent);
 
-                contentStack.Measure(new Size(pageSize.Width, contentHeight));
+                contentStack.Measure(new System.Windows.Size(pageSize.Width, contentHeight));
                 contentStack.RenderTransform = new TranslateTransform(40, 0);
                 contentStack.Arrange(new Rect(40, 0, pageSize.Width - 40, contentHeight));
                 contentStack.UpdateLayout();
@@ -131,7 +134,7 @@ namespace WpfApp5.Helper
             Func<TGroup, IEnumerable<TItem>> getGroupItems,
             Func<TGroup, UIElement> createGroupHeader,
             Func<TItem, UIElement> createItemRow,
-            Size pageSize,
+            System.Windows.Size pageSize,
             string reportTitle,
             Func<UIElement> createFirstPageHeader,
             Func<UIElement> createRegularPageHeader,
@@ -163,7 +166,7 @@ namespace WpfApp5.Helper
                 fixedPage.Children.Add(header);
 
                 // Use VisualBrush for rendering
-                pageContentStack.Measure(new Size(pageSize.Width - 80, contentHeight));
+                pageContentStack.Measure(new System.Windows.Size(pageSize.Width - 80, contentHeight));
                 pageContentStack.Arrange(new Rect(0, 0, pageSize.Width - 80, contentHeight));
                 pageContentStack.UpdateLayout();
 
@@ -183,7 +186,7 @@ namespace WpfApp5.Helper
                     Margin = new Thickness(40, 0, 40, 0)
                 };
 
-                var rect = new Rectangle
+                var rect = new System.Windows.Shapes.Rectangle
                 {
                     Width = pageWidth - 80,
                     Height = contentHeight,

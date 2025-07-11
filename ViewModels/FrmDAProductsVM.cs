@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using WpfApp5.Helper;
 using WpfApp5.Models;
+using WpfApp5.Services;
 using WpfApp5.Views;
 
 namespace WpfApp5.ViewModels
@@ -35,14 +36,17 @@ namespace WpfApp5.ViewModels
 
         public FrmDAProductsVM()
         {
-            LoadDataFromSQL(); // Load products from SQL Server database
-
             // Initialize view and set filter
             ProductsView = CollectionViewSource.GetDefaultView(Products);
             ProductsView.GroupDescriptions?.Add(new PropertyGroupDescription(nameof(Product.ProductGroupDisplay)));
             ProductsView.Filter = FilterProducts;
+        }
 
-            // Subscribe to property changes for each product to update total quantity dynamically
+        public async Task InitAsync()
+        {
+            await LoadDataFromSQLAsync();
+
+            // Now that data is loaded, you can subscribe safely
             foreach (var p in Products)
                 p.PropertyChanged += Product_PropertyChanged;
 
@@ -63,10 +67,38 @@ namespace WpfApp5.ViewModels
         }
 
         [RelayCommand]
+        private void PrintRdlcV2()
+        {
+            var popup = new RO_Print(ProductsView.Cast<Product>().ToList(), "Print"); // pass a copy of the data
+            popup.Owner = System.Windows.Application.Current.MainWindow;
+            popup.ShowInTaskbar = false;
+            popup.ShowDialog();
+        }
+
+        [RelayCommand]
+        private void Export2PDF()
+        {
+            var popup = new RO_Print(ProductsView.Cast<Product>().ToList(), "Export to PDF"); // pass a copy of the data
+            popup.Owner = System.Windows.Application.Current.MainWindow;
+            popup.ShowInTaskbar = false;
+            popup.ShowDialog();
+        }
+
+        [RelayCommand]
+        private void PrintRdlc()
+            // Triggered when the print RDLC button is clicked
+        {
+            var currentProducts = ProductsView.Cast<Product>().ToList(); // Get the currently filtered products
+            var reportWindow = new WinReport(currentProducts);
+            reportWindow.WindowState= WindowState.Maximized; // Maximize the report window
+            reportWindow.Show();
+        }
+
+        [RelayCommand]
         private void Print() // Triggered when the print button is clicked
         {
             var currentProducts = ProductsView.Cast<Product>().ToList(); // Get the currently filtered products
-            var a4Size = new Size(793.7, 1122.5); // A4 size in WPF units (1/96 inch)
+            var a4Size = new System.Windows.Size(793.7, 1122.5); // A4 size in WPF units (1/96 inch)
 
             // Build the paginated report document
             var doc = CommonReportBuilder.BuildPaginationDocument(
@@ -88,7 +120,7 @@ namespace WpfApp5.ViewModels
             // Create and show the report preview window
             var previewWindow = new ReportPreview(doc)
             {
-                Owner = Application.Current.MainWindow,
+                Owner = System.Windows.Application.Current.MainWindow,
                 ShowInTaskbar = false
             };
             previewWindow.ShowDialog();
@@ -130,22 +162,17 @@ namespace WpfApp5.ViewModels
         }
 
         // Method to load data from SQL Server database
-        private void LoadDataFromSQL()
+        private async Task LoadDataFromSQLAsync()
         {
-            string connectionString = connString;
-            string query = "SELECT tP.ProductID, tP.ProductName, tP.ProductQty, tP.ProductUnit, tP.ProductPrice, tG.ProductGrp, tG.ProductGrp_name " +
-                "FROM tbl_Products tP INNER JOIN tbl_ProductGroups tG ON tP.ProductGrp = tG.ProductGrp";
-
-            using SqlConnection conn = new SqlConnection(connectionString);
-            using SqlCommand cmd = new SqlCommand(query, conn);
-            conn.Open();
-
-            using SqlDataReader reader = cmd.ExecuteReader();
-
-            Products.Clear(); // Clear existing products before loading new ones
-            while (reader.Read())
+            try
             {
-                Products.Add(new Product
+                string sql = @"
+                    SELECT tP.ProductID, tP.ProductName, tP.ProductQty, tP.ProductUnit, tP.ProductPrice, 
+                           tG.ProductGrp, tG.ProductGrp_name 
+                    FROM tbl_Products tP 
+                    INNER JOIN tbl_ProductGroups tG ON tP.ProductGrp = tG.ProductGrp";
+
+                var data = await DatabaseService.LoadDataFromSQLAsync<Product>(connString, sql, reader => new Product
                 {
                     ProductID = reader.GetString(0),
                     ProductName = reader.GetString(1),
@@ -155,8 +182,20 @@ namespace WpfApp5.ViewModels
                     ProductGrp = reader.GetString(5),
                     ProductGrpName = reader.GetString(6)
                 });
+
+                Products.Clear();
+                foreach (var product in data)
+                {
+                    Products.Add(product);
+                }
+
+                TotalQty = Products.Sum(p => p.ProductQty);
             }
-            TotalQty = Products.Sum(p => p.ProductQty);
+            catch(Exception ex)
+            {
+                // Handle exceptions (e.g., log the error, show a message to the user)
+                System.Windows.MessageBox.Show($"Error loading data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

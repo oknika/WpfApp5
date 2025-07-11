@@ -10,19 +10,26 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp5.Models;
+using WpfApp5.Services;
+using WpfApp5.ViewModels;
 
 namespace WpfApp5.Views
 {
     /// <summary>
-    /// Interaction logic for SidebarMenu.xaml
+    /// Interaction logic for RO_Print.xaml
     /// </summary>
-    public partial class SidebarMenu : System.Windows.Controls.UserControl
+    public partial class RO_Print : Window
     {
-        public SidebarMenu()
+        public RO_Print(List<Product> products, string strButtonCaption)
         {
             InitializeComponent();
+
+            var vm = new RO_PrintVM(products, strButtonCaption, new FileDialogService());
+            vm.CloseAction = this.Close;
+
+            DataContext = vm;
         }
     }
 }

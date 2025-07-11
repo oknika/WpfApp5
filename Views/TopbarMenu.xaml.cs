@@ -18,7 +18,7 @@ namespace WpfApp5.Views
     /// <summary>
     /// Interaction logic for TopbarMenu.xaml
     /// </summary>
-    public partial class TopbarMenu : UserControl
+    public partial class TopbarMenu : System.Windows.Controls.UserControl
     {
         public TopbarMenu()
         {

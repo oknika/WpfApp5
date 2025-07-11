@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using WpfApp5.Models;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace WpfApp5.Helper
 {
@@ -69,7 +70,7 @@ namespace WpfApp5.Helper
             {
                 Text = "Qty",
                 FontWeight = FontWeights.Bold,
-                HorizontalAlignment = HorizontalAlignment.Center
+                HorizontalAlignment = System.Windows.HorizontalAlignment.Center
             });
             Grid.SetColumn(grid.Children[^1], 2);
 
@@ -113,7 +114,7 @@ namespace WpfApp5.Helper
             {
                 Text = product.ProductQty.ToString("N0"),
                 FontSize = 12,
-                HorizontalAlignment = HorizontalAlignment.Right
+                HorizontalAlignment = System.Windows.HorizontalAlignment.Right
             });
             Grid.SetColumn(grid.Children[^1], 2);
 
@@ -157,12 +158,12 @@ namespace WpfApp5.Helper
         {
             var stack = new StackPanel
             {
-                Orientation = Orientation.Horizontal,
+                Orientation = System.Windows.Controls.Orientation.Horizontal,
                 Margin = new Thickness(40, 20, 0, 10),
                 VerticalAlignment = VerticalAlignment.Center
             };
 
-            var icon = new Image
+            var icon = new System.Windows.Controls.Image
             {
                 Width = 32,
                 Height = 32,

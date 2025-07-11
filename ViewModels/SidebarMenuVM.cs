@@ -17,6 +17,7 @@ using WpfApp5.General;
 using WpfApp5.Views;
 using WpfApp5.Helper;
 using WpfApp5.Models;
+using Application = System.Windows.Application;
 
 namespace WpfApp5.ViewModels
 {
@@ -182,7 +183,7 @@ namespace WpfApp5.ViewModels
                         };
 
                         // Define the A4 size in pixels (assuming 96 DPI)
-                        var a4Size = new Size(793.7, 1122.5);
+                        var a4Size = new System.Windows.Size(793.7, 1122.5);
 
                         foreach (Window xwindow in Application.Current.Windows)
                         {
@@ -198,10 +199,10 @@ namespace WpfApp5.ViewModels
                             getGroupItems: g => g.Products,
                             createGroupHeader: ReportTemplates.CreateProductGroupHeader,
                             createItemRow: ReportTemplates.CreateProductGroupedRow,
-                            pageSize: new Size(793.7, 1122.5),
+                            pageSize: new System.Windows.Size(793.7, 1122.5),
                             reportTitle: "Grouped Product Report",
-                            createFirstPageHeader: () => ReportTemplates.CreateBigTitleHeader("Grouped Product Report"),
-                            createRegularPageHeader: () => ReportTemplates.CreateSmallTitleHeader("Grouped Product Report"),
+                            createFirstPageHeader: () => ReportTemplates.CreateBigTitleHeader("Product Report: Grouped"),
+                            createRegularPageHeader: () => ReportTemplates.CreateSmallTitleHeader("Product Report: Grouped"),
                             createHeaderRow: ReportTemplates.CreateProductColumnHeader
                         );
 
@@ -231,7 +232,7 @@ namespace WpfApp5.ViewModels
                         };
 
                         // Define the A4 size in pixels (assuming 96 DPI)
-                        var a4Size = new Size(793.7, 1122.5);
+                        var a4Size = new System.Windows.Size(793.7, 1122.5);
 
                         // Check if the ReportPreview window is already open
                         foreach (Window xwindow in Application.Current.Windows)
@@ -255,8 +256,8 @@ namespace WpfApp5.ViewModels
                             },
                             pageSize: a4Size,
                             reportTitle: "Product Report",
-                            createFirstPageHeader: () => ReportTemplates.CreateBigTitleHeader("Product Report"),
-                            createRegularPageHeader: () => ReportTemplates.CreateSmallTitleHeader("Product Report"),
+                            createFirstPageHeader: () => ReportTemplates.CreateBigTitleHeader("Product Report: Flat"),
+                            createRegularPageHeader: () => ReportTemplates.CreateSmallTitleHeader("Product Report: Flat"),
                             createHeaderRow: () => ReportTemplates.CreateProductHeader()
                         );
 

@@ -18,7 +18,7 @@ namespace WpfApp5.ViewModels
     public partial class MainWindowVM : ObservableRecipient
     {
         [ObservableProperty]
-        private UserControl currentView;
+        private System.Windows.Controls.UserControl currentView;
 
         [ObservableProperty]
         private double sidebarWidth = 250;
@@ -48,7 +48,7 @@ namespace WpfApp5.ViewModels
             {
                 case "LinkTable":
                     var window = new LTM();
-                    window.Owner = Application.Current.MainWindow;
+                    window.Owner = System.Windows.Application.Current.MainWindow;
                     window.ShowInTaskbar = false;
                     window.ShowDialog();
                     break;

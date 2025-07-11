@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfApp5.ViewModels;
 
 namespace WpfApp5.Views
 {
@@ -19,9 +20,22 @@ namespace WpfApp5.Views
     /// </summary>
     public partial class FrmDAProducts : Window
     {
+        private readonly FrmDAProductsVM _vm;
+
         public FrmDAProducts()
         {
             InitializeComponent();
+
+            _vm = new FrmDAProductsVM();
+            this.DataContext = _vm;
+
+            // Hook the Loaded event to call InitAsync
+            this.Loaded += FrmDAProducts_Loaded;
+        }
+
+        private async void FrmDAProducts_Loaded(object sender, RoutedEventArgs e)
+        {
+            await _vm.InitAsync();
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

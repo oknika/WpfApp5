@@ -5,6 +5,8 @@ using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using HorizontalAlignment = System.Windows.HorizontalAlignment;
+using Size = System.Windows.Size;
 
 namespace WpfApp5.Helper
 {
@@ -56,7 +58,7 @@ namespace WpfApp5.Helper
                 AddPageHeader(fixedPage, i + 1, pageCount);
                 AddPageFooter(fixedPage);*/
 
-                var contentRect = new Rectangle
+                var contentRect = new System.Windows.Shapes.Rectangle
                 {
                     Width = pageSize.Width,
                     Height = contentHeight,

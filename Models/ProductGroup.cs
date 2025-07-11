@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,6 +12,15 @@ namespace WpfApp5.Models
     {
         public string GroupName { get; set; }
         public ObservableCollection<Product> Products { get; set; }
+    }
+
+    public partial class GroupingOption : ObservableObject
+    {
+        [ObservableProperty]
+        private string _displayText;
+
+        [ObservableProperty]
+        private bool _isGroupingEnabled;
     }
 
 }
