@@ -21,6 +21,9 @@ namespace WpfApp5.Models
 
         [ObservableProperty]
         private bool _isGroupingEnabled;
+
+        [ObservableProperty]
+        private string _strGrpBy;
     }
 
 }

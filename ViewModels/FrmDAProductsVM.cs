@@ -67,6 +67,15 @@ namespace WpfApp5.ViewModels
         }
 
         [RelayCommand]
+        private void PrintRdlcV3()
+        {
+            var popup = new RO_PrintV2(ProductsView.Cast<Product>().ToList(), "Print"); // pass a copy of the data
+            popup.Owner = System.Windows.Application.Current.MainWindow;
+            popup.ShowInTaskbar = false;
+            popup.ShowDialog();
+        }
+
+        [RelayCommand]
         private void PrintRdlcV2()
         {
             var popup = new RO_Print(ProductsView.Cast<Product>().ToList(), "Print"); // pass a copy of the data

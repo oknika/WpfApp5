@@ -40,7 +40,25 @@ namespace WpfApp5.Models
         [ObservableProperty] public decimal _productPrice;
         [ObservableProperty] public string _productGrp;
         [ObservableProperty] public string _productGrpName;
+        [ObservableProperty] public string _productSubGrp;
+        [ObservableProperty] public string _productSubGrpName;
 
         public string ProductGroupDisplay => $"{ProductGrp} - {ProductGrpName}";
+        public string ProductSubGroupDisplay => $"{ProductSubGrp} - {ProductSubGrpName}";
+    }
+
+    public partial class GroupedProduct : ObservableObject
+    {
+        public string ProductGrp { get; set; }
+        public string ProductGrpName { get; set; }
+        public int ProductCount { get; set; }
+    }
+
+    public partial class SubGroupedProduct : ObservableObject
+    {
+        public string ProductGrp { get; set; }
+        public string ProductSubGrp { get; set; }
+        public string ProductSubGrpName { get; set; }
+        public int ProductCount { get; set; }
     }
 }

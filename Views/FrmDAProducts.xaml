@@ -119,6 +119,7 @@
         </Grid>
         
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <Button Command="{Binding PrintRdlcV3Command}" Margin="5" Height="30" Width="100" Content="Print Report v4"/>
             <Button Command="{Binding Export2PDFCommand}" Margin="5" Height="30" Width="100" Content="Export to PDF"/>
             <Button Command="{Binding PrintRdlcV2Command}" Margin="5" Height="30" Width="100" Content="Print Report v3"/>
             <Button Command="{Binding PrintRdlcCommand}" Margin="5" Height="30" Width="100" Content="Print Report v2"/>
