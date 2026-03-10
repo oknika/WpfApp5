@@ -32,10 +32,23 @@ namespace WpfApp5.ViewModels
         [ObservableProperty]
         private string keyword; // Search keyword for filtering products
 
+        [ObservableProperty]
+        private string txtKeywordLbl;
+
+        [ObservableProperty]
+        private string productLblCapt;
+
+        [ObservableProperty]
+        private double headerLblFntSize;
+
         public ICollectionView ProductsView { get; } // View for filtering and grouping products
 
         public FrmDAProductsVM()
         {
+            TxtKeywordLbl = "Keyword : ";
+            ProductLblCapt = "Product: ";
+            HeaderLblFntSize = 12;
+
             // Initialize view and set filter
             ProductsView = CollectionViewSource.GetDefaultView(Products);
             ProductsView.GroupDescriptions?.Add(new PropertyGroupDescription(nameof(Product.ProductGroupDisplay)));
@@ -51,6 +64,23 @@ namespace WpfApp5.ViewModels
                 p.PropertyChanged += Product_PropertyChanged;
 
             UpdateTotalQty();
+        }
+
+        [RelayCommand]
+        private void FakeTranslate()
+        {
+            if(TxtKeywordLbl == "Keyword : ")
+            {
+                TxtKeywordLbl = "Kata Kunci Keyword lah : ";
+                ProductLblCapt = "Test aja Nama Lengkap Produk: ";
+                //HeaderLblFntSize = 18;
+            }
+            else
+            {
+                TxtKeywordLbl = "Keyword : ";
+                ProductLblCapt = "Product: ";
+                //HeaderLblFntSize = 10;
+            }
         }
 
         [RelayCommand]

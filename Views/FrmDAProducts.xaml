@@ -20,7 +20,7 @@
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
     </Window.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.4*"/>
@@ -29,7 +29,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
-            <TextBlock Text="Keyword:" FontSize="12" FontWeight="Bold" Margin="5" Height="20"/>
+            <TextBlock Text="{Binding TxtKeywordLbl}" FontSize="12" FontWeight="Bold" Margin="5" Height="20"/>
             <!--<Border BorderBrush="Black" BorderThickness="1" Height="20">-->
             <TextBox Text="{Binding Keyword, UpdateSourceTrigger=PropertyChanged}" FontSize="12" Width="200" Height="20"/>
             <!--</Border>-->
@@ -39,12 +39,75 @@
             <Button Command="{Binding ClearSearchCommand}" Margin="5" Width="20" Height="20">
                 <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE72C;" FontSize="12" TextAlignment="Center"/>
             </Button>
+            <Button Command="{Binding FakeTranslateCommand}" Margin="5" Padding="5,0,5,0" Height="20">
+                <TextBlock FontFamily="Arial" Text="Translate (fake)" FontSize="10" TextAlignment="Center"/>
+            </Button>
         </StackPanel>
 
         <Grid Margin="10" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-            <ListView ItemsSource="{Binding ProductsView}"
-                        ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <Grid Grid.Row="0" Grid.IsSharedSizeScope="True">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Header -->
+                    <RowDefinition Height="*"/>
+                    <!-- List -->
+                </Grid.RowDefinitions>
+
+                <!-- Header -->
+                <Grid Grid.Row="0" Margin="5,0,0,8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="ColProductName"/>
+                        <ColumnDefinition Width="20"/>
+                        <!-- spacer, optional -->
+                        <ColumnDefinition Width="Auto" SharedSizeGroup="ColPrice"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <!-- optional: actions column -->
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="{Binding ProductLblCapt}" FontWeight="Bold" FontSize="{Binding HeaderLblFntSize}"/>
+                    <TextBlock Grid.Column="2" Text="Price" FontWeight="Bold"/>
+                </Grid>
+
+                <!-- Items -->
+                <ListView Grid.Row="1" ItemsSource="{Binding ProductsView}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="ColProductName"/>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="ColPrice"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <!-- actions -->
+                                </Grid.ColumnDefinitions>
+
+                                <TextBox Grid.Column="0"
+                                     Text="{Binding ProductName}"
+                                     MinWidth="120"
+                                     TextWrapping="NoWrap" />
+
+                                <TextBox Grid.Column="2"
+                                     Text="{Binding ProductPrice}"
+                                     MinWidth="80" />
+
+                                <Button Grid.Column="3" Width="25" Height="25"
+                                    Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=ListView}}"
+                                    CommandParameter="{Binding}">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE74D;" />
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+            
+            <ListView Grid.Row="1" ItemsSource="{Binding ProductsView}"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto"  Margin="0,10,0,0">
                 <!-- Group Header -->
                 <ListView.GroupStyle>
                     <GroupStyle>
@@ -78,7 +141,7 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
-                                <TextBlock Text="Product : " FontWeight="Bold"/>
+                                <TextBlock Text="{Binding DataContext.ProductLblCapt, RelativeSource={RelativeSource AncestorType=ListView}}" FontWeight="Bold"/>
                                 <TextBlock Text="{Binding ProductID}" />
                                 <TextBlock Text=" - " FontWeight="Bold"/>
                                 <TextBlock Text="{Binding ProductName}" />
@@ -117,7 +180,7 @@
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-        
+
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
             <Button Command="{Binding PrintRdlcV3Command}" Margin="5" Height="30" Width="100" Content="Print Report v4"/>
             <Button Command="{Binding Export2PDFCommand}" Margin="5" Height="30" Width="100" Content="Export to PDF"/>
@@ -127,4 +190,4 @@
             <Button Click="CloseButton_Click" Margin="5" Height="30" Width="100" Content="Close"/>
         </StackPanel>
     </Grid>
-</Window>
+</Window> 
